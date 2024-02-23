@@ -11,8 +11,8 @@
     <groupId>net.itfeng</groupId>
     <artifactId>MqttDemoServer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>MqttDemoSpring</name>
-    <description>MqttDemoSpring</description>
+    <name>MqttDemoServer</name>
+    <description>MqttDemoServer</description>
     <properties>
         <java.version>17</java.version>
     </properties>
