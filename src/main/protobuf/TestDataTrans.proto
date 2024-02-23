@@ -1,0 +1,156 @@
+syntax = "proto3";
+package net.itfeng.mqttdemoserver.protocol;
+option java_package = "net.itfeng.mqttdemoserver.protocol";
+//option java_multiple_files = true;
+
+message TestDataTrans {
+  /**
+   * 开始时间，毫秒
+   */
+  uint64 startTimeMillis = 1;
+  /**
+    * 客户端ID
+    */
+  string clientId = 2;
+  /**
+  * 消息id
+  */
+  string msgId = 3;
+
+  repeated ADASRecognizedReq adas = 4;
+
+}
+
+message TestDataTransResult {
+  /**
+   * 开始时间，毫秒
+   */
+  uint64 startTimeMillis = 1;
+  /**
+    * 客户端ID
+    */
+  string clientId = 2;
+  /**
+  * 消息id
+  */
+  string msgId = 3;
+  /**
+   * 客户端端收到时间
+   */
+  uint64 receivedTimeMillis = 4;
+  /**
+   * 数据接收结果，SUCCESS,PB_ERROR等
+   */
+  string result = 5;
+}
+//adas实体详情
+message ADASRecognizedReq {
+  /** 类型： 1-人 2-自行车 3-小轿车 4-摩托车 5-红绿灯 6-bus 8-truck 9-路边摄像头 */
+  uint32 type = 1;
+  /** 识别车辆uuid --必须传*/
+  string uuid = 2;
+  /** 颜色 */
+  string color = 3;
+  /** 车牌号 */
+  string cardId = 4;
+  /** 纬度 */
+  double lat = 5;
+  /** 经度 */
+  double lon = 6;
+  /** 方向 */
+  double heading = 7;
+  /** 采集时间 */
+  uint64 systemTime = 8;
+  /** 卫星时间 */
+  uint64 satelliteTime = 9;
+  /** 海拔 */
+  double alt = 10;
+  /** 车速 */
+  double speed = 11;
+  /** morton码 --工控机可传否？*/
+  uint64 mortonCode = 12;
+  /**城市编码*/
+  string cityCode = 13;
+  /**运营车辆类型 9出租车车 10小巴*/
+  uint32 vehicleType = 14;
+  /** 数据来源精度(来自上层) 0 - 普通定位、1 - 高精定位 */
+  uint32 dataAccuracy = 15;
+  /** 采集设备到被采车辆距离 */
+  double distance = 16;
+  /** 瓦片ID */
+  string tileId = 17;
+  /** 危险级别 1 绿,2 黄,3 红 */
+  uint32 drawlevel = 18;
+  /** 采集设备到被采车辆X距离 */
+  double distanceX = 19;
+  /** 采集设备到被采车辆Y距离 */
+  double distanceY = 20;
+  /** 道路ID */
+  string roadId = 21;
+  /** 车道号：中心线编号为0， 中心线右侧编号为负数，3车道通行Road的车道编号，0,-1,-2,-3*/
+  int32 laneNum = 22;
+  /** 采集IP，4个IP用逗号分隔 */
+  string collectIPs = 23;
+
+}
+
+message ClientTimeDiff{
+  /**
+  * 云端开始时的时间戳
+  */
+  uint64 startTimeMillis = 1;
+  /**
+   * 设备收到时间
+   */
+  uint64 timeMillis = 2;
+  /**
+  * 设备mac
+  */
+  string clientId = 3;
+  /**
+  * 消息id
+  */
+  string msgId = 4;
+  /**
+  * 云端收到回复时的时间戳,客户端收到时间
+  */
+  uint64 endTimeMillis = 5;
+}
+
+message HeartBeatPing{
+  uint64 startTimeMillis = 1;
+  /**
+   * 客户端ID
+   */
+  string clientId = 2;
+  /**
+  * 消息id
+  */
+  string msgId = 3;
+}
+
+message HeartBeatPong{
+  /**
+   * 服务端收到时间
+   */
+  uint64 receivedTimeMillis = 1;
+  /**
+  * 消息id
+  */
+  string msgId = 3;
+}
+
+message OnlineEvent{
+  uint64 startTimeMillis = 1;
+  /**
+   * 客户端ID
+   */
+  string clientId = 2;
+  /**
+  * 消息id
+  */
+  string msgId = 3;
+}
+
+
+

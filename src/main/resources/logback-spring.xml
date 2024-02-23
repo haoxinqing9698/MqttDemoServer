@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 当前应用名称 -->
+    <property name="appName" value="MqttDemoServer" />
+
+    <!-- 日志文件统一写到/tmp目录,应用日志写入到applog目录,访问日志写入到accesslog目录 -->
+    <property name="logHome" value="/tmp/applog" />
+
+    <!--单个日志文件最大100M-->
+    <property name="MAX_FILE_SIZE" value="500MB"/>
+
+    <!-- 该滚动策略日志的总大小，超过的日志会被清除totalSizeCap -->
+    <property name="TOTAL_SIZE_CAP" value="5GB"/>
+
+    <!-- 日志文件最大归档时间 3 天-->
+    <property name="LOG_FILE_MAX_HISTORY" value="3"/>
+
+    <!--jmx log信息提供给Spring Boot Admin-->
+    <jmxConfigurator/>
+
+    <logger name ="com.netflix" level ="ERROR"/>
+    <logger name ="org.springframework.kafka" level ="ERROR"/>
+    <logger name ="org.apache.kafka" level ="ERROR"/>
+
+    <!-- 控制台输出日志格式 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%red(%d{yyyy-MM-dd HH:mm:ss.SSS})|%green([%thread])|%highlight(%-5level)|%replace(%caller{1}){'\t|Caller.{1}0	 at|\r\n', ''}|%cyan(%msg%n)</pattern>
+            <charset>
+                UTF-8
+            </charset>
+        </encoder>
+    </appender>
+
+
+    <!-- 指定文件的日志输出，使用确定的格式以对数据进行分析 -->
+    <appender name="fileinfolog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logHome}/${appName}.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--<level>ERROR</level>   &lt;!&ndash;过滤掉error的级别&ndash;&gt;-->
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>
+                UTF-8
+            </charset>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${logHome}/${appName}.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <MaxFileSize>${MAX_FILE_SIZE}</MaxFileSize>
+            <MaxHistory>${LOG_FILE_MAX_HISTORY}</MaxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+
+    <!-- 指定文件的日志输出，使用确定的格式以对数据进行分析 -->
+    <appender name="FILE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logHome}/TestDataTrans.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!--<level>ERROR</level>   &lt;!&ndash;过滤掉error的级别&ndash;&gt;-->
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n</pattern>
+            <charset>
+                UTF-8
+            </charset>
+        </encoder>
+        <!--滚动策略-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--路径-->
+            <fileNamePattern>${logHome}/TestDataTrans.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <MaxFileSize>${MAX_FILE_SIZE}</MaxFileSize>
+            <MaxHistory>${LOG_FILE_MAX_HISTORY}</MaxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+    <logger name="net.itfeng.mqttdemoserver.util.TestDataTransTextLogUtil" level="debug" additivity="false">
+        <appender-ref ref="FILE_LOG" />
+    </logger>
+
+
+    <root level="info">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="fileinfolog" />
+    </root>
+</configuration>
