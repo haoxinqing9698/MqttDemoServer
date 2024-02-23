@@ -29,8 +29,7 @@ public class TestDataTransResultMessageHandler implements MyMessageHandler{
     private String uploadMsgResultTopic;
 
     public void handle(byte[] messageByte)  {
-        long now = System.currentTimeMillis();
-        net.itfeng.mqttdemoserver.protocol.TestDataTransOuterClass.TestDataTransResult testDataTransResult = null;
+        net.itfeng.mqttdemoserver.protocol.TestDataTransOuterClass.TestDataTransResult testDataTransResult;
         try {
             testDataTransResult = net.itfeng.mqttdemoserver.protocol.TestDataTransOuterClass.TestDataTransResult.parseFrom(messageByte);
         } catch (InvalidProtocolBufferException e) {
@@ -59,6 +58,10 @@ public class TestDataTransResultMessageHandler implements MyMessageHandler{
         return uploadMsgResultTopic;
     }
 
+    /**
+     * 服务端监听的是所有客户端的mqtt topic,而本消息处理器只处理与当前消息类型匹配的topic数据
+     * 由于每次使用正则校验消耗性能，因此通过缓存将复杂度将到 O(1)
+     */
     private static Set<String> mySupportTopic = Collections.synchronizedSet(new HashSet<>());
     private static Set<String> myUnSupportTopic = Collections.synchronizedSet(new HashSet<>());
     @Override
