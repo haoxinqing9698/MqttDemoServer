@@ -2,6 +2,7 @@ package net.itfeng.mqttdemoserver.handler;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import net.itfeng.mqttdemoserver.context.ClientStatusContext;
+import net.itfeng.mqttdemoserver.context.MessageContext;
 import net.itfeng.mqttdemoserver.context.TimeDiffContext;
 import net.itfeng.mqttdemoserver.util.TestDataTransTextLogUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,12 @@ public class TestDataTransResultMessageHandler implements MyMessageHandler{
         long diff = TimeDiffContext.getTimeDiff(sn);
         // 计算时延
         long latency = endTimeMillis - startTimeMillis + diff;
-        TestDataTransTextLogUtil.log(sn+ " "+ messageByte.length + " " + latency +" "+ diff);
+        Integer size = MessageContext.getLength(testDataTransResult.getClientId(),testDataTransResult.getMsgId());
+        if(size==null){
+            size =0;
+        }
+        TestDataTransTextLogUtil.log(sn+ " "+ size + " " + latency +" "+ diff);
+
     }
 
     @Override

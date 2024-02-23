@@ -3,6 +3,7 @@ package net.itfeng.mqttdemoserver.thread;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.itfeng.mqttdemoserver.context.MessageContext;
 import net.itfeng.mqttdemoserver.service.MessageAsyncPublishService;
 import net.itfeng.mqttdemoserver.util.MockTestDataUtil;
 
@@ -65,6 +66,7 @@ public class TestDataTransThread implements Runnable {
                 net.itfeng.mqttdemoserver.protocol.TestDataTransOuterClass.TestDataTrans testDataTrans = MockTestDataUtil.buildTestDataTransObject(size,clientId);
                 // 发送数据
                 messageAsyncPublishService.publish(pushMsgTopic, testDataTrans.toByteArray());
+                MessageContext.putClient(testDataTrans.getClientId(),testDataTrans.getMsgId(),testDataTrans.getSerializedSize());
             }
             try {
                 TimeUnit.MILLISECONDS.sleep(pushMsgInterval);
