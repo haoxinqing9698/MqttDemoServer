@@ -46,3 +46,7 @@ For further reference, please consider the following sections:
 * 系统启动后运行定时任务，发送测试数据TestDataTransService#run，执行发送测试数据的逻辑
     * 定时任务每3秒运行一次，监控到有客户端上线，则创建一个独立的发送数据线程向客户端发送数据。
     * 发送数据的大小、发送的次数、发送频率 根据配置文件[application.yml](src%2Fmain%2Fresources%2Fapplication.yml)中的配置决定
+### 数据分析说明
+* 测试结果数据会写入到文件/tmp/applog/TestDataTrans.log，配置详情见[logback-spring.xml](src%2Fmain%2Fresources%2Flogback-spring.xml)
+* 运行 [data_analysis.py](script%2Fdata_analysis.py) 可以得到如下结果
+![img.png](img.png)

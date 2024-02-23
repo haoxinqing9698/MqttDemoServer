@@ -31,7 +31,7 @@ mqtt:
   # 给客户端下发多大的数据，字节数集合
   push_msg_size_array: 300, 1000, 2000, 5000, 10000, 20000
   # 每个大小的数据下发多少次
-  push_msg_count: 20000
+  push_msg_count: 2000
   # 服务端下发消息的间隔，单位ms
   push_msg_interval: 50
 
