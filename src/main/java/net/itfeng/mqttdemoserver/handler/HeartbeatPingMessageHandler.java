@@ -73,8 +73,8 @@ public class HeartbeatPingMessageHandler implements MyMessageHandler{
      * 服务端监听的是所有客户端的mqtt topic,而本消息处理器只处理与当前消息类型匹配的topic数据
      * 由于每次使用正则校验消耗性能，因此通过缓存将复杂度将到 O(1)
      */
-    private static Set<String> mySupportTopic = Collections.synchronizedSet(new HashSet<>());
-    private static Set<String> myUnSupportTopic = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<String> mySupportTopic = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<String> myUnSupportTopic = Collections.synchronizedSet(new HashSet<>());
     @Override
     public boolean isSupport(String topic) {
         if (mySupportTopic.contains(topic)) {
